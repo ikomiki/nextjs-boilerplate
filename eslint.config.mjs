@@ -54,18 +54,29 @@ export default [
   },
   {
     files: ["**/*.{js,jsx,mjs,ts,tsx}"],
-    ignores: ["packages/ui-components/src/components/ui/**"],
+    ignores: [
+      "packages/ui-components/src/components/ui/**",
+      "**/*.config.{js,mjs,ts}",
+      ".storybook/**",
+    ],
     plugins: { jsdoc },
     rules: {
       "jsdoc/require-jsdoc": [
         "error",
         {
           publicOnly: true,
-          require: { FunctionDeclaration: true, ClassDeclaration: true },
+          require: {
+            FunctionDeclaration: true,
+            ClassDeclaration: true,
+            ArrowFunctionExpression: true,
+            FunctionExpression: true,
+          },
           contexts: [
             "TSTypeAliasDeclaration",
             "TSInterfaceDeclaration",
-            "ExportNamedDeclaration > VariableDeclaration",
+            "TSEnumDeclaration",
+            "VariableDeclarator",
+            "ExportDefaultDeclaration > ObjectExpression",
           ],
         },
       ],

@@ -68,7 +68,7 @@ eslint-plugin-boundaries で、パッケージ間の import を次の表の向�
 
 同じパッケージの中の相対 import と、外部ライブラリの import は対象にならない。
 
-eslint-plugin-jsdoc で、export した関数、クラス、型、インターフェース、変数に JSDoc を必須にする。`packages/ui-components/src/components/ui` は `bunx shadcn add` が生成するファイルなので対象から外す。
+eslint-plugin-jsdoc で、export した関数、クラス、型、インターフェース、enum、変数、default export のアロー関数とオブジェクトに JSDoc を必須にする。`export { f }` で後から export した関数も対象になる。`export { x }` や `export default x` で後から export した関数以外の値は、プラグインが export を判定できないので対象にならない。`packages/ui-components/src/components/ui` は `bunx shadcn add` が生成するファイル、`*.config.*` と `.storybook/` はツールの設定ファイルなので対象から外す。
 
 ```bash
 cat <<'EOF' > eslint.config.mjs
@@ -128,18 +128,29 @@ export default [
   },
   {
     files: ["**/*.{js,jsx,mjs,ts,tsx}"],
-    ignores: ["packages/ui-components/src/components/ui/**"],
+    ignores: [
+      "packages/ui-components/src/components/ui/**",
+      "**/*.config.{js,mjs,ts}",
+      ".storybook/**",
+    ],
     plugins: { jsdoc },
     rules: {
       "jsdoc/require-jsdoc": [
         "error",
         {
           publicOnly: true,
-          require: { FunctionDeclaration: true, ClassDeclaration: true },
+          require: {
+            FunctionDeclaration: true,
+            ClassDeclaration: true,
+            ArrowFunctionExpression: true,
+            FunctionExpression: true,
+          },
           contexts: [
             "TSTypeAliasDeclaration",
             "TSInterfaceDeclaration",
-            "ExportNamedDeclaration > VariableDeclaration",
+            "TSEnumDeclaration",
+            "VariableDeclarator",
+            "ExportDefaultDeclaration > ObjectExpression",
           ],
         },
       ],
