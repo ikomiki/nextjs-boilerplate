@@ -59,7 +59,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 
 | from | 許可する import 先 |
 |---|---|
-| apps/* | counter, ui-components, datastore-* |
+| apps/* | counter, ui-components, datastore-*, database |
 | counter | ui-components |
 | datastore-sqlite | database |
 | ui-components / datastore-indexed-db / datastore-memory / database | なし (外部ライブラリのみ) |
