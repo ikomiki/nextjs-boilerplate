@@ -402,7 +402,9 @@ export type CounterStore = {
 export function createCounterStore(store: CounterStore): StoreApi<CounterState>;
 ```
 
-`ready` は `load()` が終わるまで false で、その間の `increment` は何もしない。`CounterTemplate` も `ready` になるまで [+1] と [リセット] を `disabled` にする。保存値が無ければ 0 から始める。
+`ready` は `load()` が終わるまで false で、その間の `increment` は何もしない。`CounterTemplate` も `ready` になるまで [+1] と [リセット] を `disabled` にする。保存値が無ければ 0 から始める。開発時の React は effect を 2 回走らせて `load()` も 2 回呼ぶので、`ready` になった後に返った読み込み結果は捨てる。
+
+`saving` は `increment` と `reset` が始めた `set` のうち、終わっていないものがある間 true になる。`CounterTemplate` はこれを `<main>` の `aria-busy` に出す。表示の値は `set` の完了を待たずに先に変わるので、保存が終わったかどうかは `aria-busy` で見る。
 
 ### 依存の向き
 
