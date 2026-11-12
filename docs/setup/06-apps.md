@@ -102,3 +102,54 @@ bun run --filter @app/counter-memory-app dev
 ```
 
 http://localhost:3002 を開く。メモリ版は再読込すると 0 に戻る。
+
+## counter-indexed-db-app
+
+`tsconfig.json`、`postcss.config.mjs`、`app/globals.css`、`app/layout.tsx` はメモリ版と同じなので複製する。
+
+```bash
+mkdir -p apps/counter-indexed-db-app/app
+cat <<'EOF' > apps/counter-indexed-db-app/package.json
+{
+  "name": "@app/counter-indexed-db-app",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "typecheck": "bun check"
+  }
+}
+EOF
+(cd apps/counter-indexed-db-app && bun add next react react-dom "@app/counter@workspace:*" "@app/ui-components@workspace:*" "@app/datastore-indexed-db@workspace:*" && bun add -d typescript @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss)
+cp apps/counter-memory-app/tsconfig.json apps/counter-memory-app/postcss.config.mjs apps/counter-indexed-db-app/
+cp apps/counter-memory-app/app/globals.css apps/counter-memory-app/app/layout.tsx apps/counter-indexed-db-app/app/
+cat <<'EOF' > apps/counter-indexed-db-app/next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  transpilePackages: [
+    "@app/counter",
+    "@app/datastore-indexed-db",
+    "@app/ui-components",
+  ],
+};
+
+export default nextConfig;
+EOF
+```
+
+`app/counter.tsx` で、メモリ版の工場関数を `createIndexedDbStore` に替える。
+
+```tsx
+const store = createIndexedDbStore<number>("counter");
+```
+
+この行はサーバー描画でも評価される。`createIndexedDbStore` は最初の `get` / `set` まで `indexedDB` に触れず、`get` は `CounterTemplate` の `useEffect` の中で呼ばれるので、サーバーでは `indexedDB` に触れない。
+
+```bash
+bunx turbo run build --filter=@app/counter-indexed-db-app
+bun run --filter @app/counter-indexed-db-app dev
+```
+
+http://localhost:3001 を開く。再読込しても値が残る。

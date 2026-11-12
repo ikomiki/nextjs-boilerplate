@@ -21,6 +21,25 @@
         "vite": "^8.3.8",
       },
     },
+    "apps/counter-indexed-db-app": {
+      "name": "@app/counter-indexed-db-app",
+      "dependencies": {
+        "@app/counter": "workspace:*",
+        "@app/datastore-indexed-db": "workspace:*",
+        "@app/ui-components": "workspace:*",
+        "next": "^16.4.6",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+      },
+      "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.5",
+        "@types/node": "^26.6.6",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "tailwindcss": "^4.3.5",
+        "typescript": "^7.0.2",
+      },
+    },
     "apps/counter-memory-app": {
       "name": "@app/counter-memory-app",
       "dependencies": {
@@ -113,6 +132,8 @@
     "@alloc/quick-lru": ["@alloc/quick-lru@5.3.0", "", {}, "sha512-U4+70Pc5ZS9osnCBCE5Jha/ciHM+Yp+CNMNC/7HvYbNRk1Ldd+f7qO65W5qfhu/TCv+/ozljlXXe9Nj8419DMA=="],
 
     "@app/counter": ["@app/counter@workspace:packages/counter"],
+
+    "@app/counter-indexed-db-app": ["@app/counter-indexed-db-app@workspace:apps/counter-indexed-db-app"],
 
     "@app/counter-memory-app": ["@app/counter-memory-app@workspace:apps/counter-memory-app"],
 
