@@ -41,8 +41,12 @@ export function createCounterStore(
       value: 0,
       ready: false,
       saving: false,
+      // React の StrictMode は effect を 2 回走らせるので load も 2 回呼ばれる。
+      // 後から返った get で、読み込み後の操作を上書きしない
       async load() {
-        set({ value: (await store.get()) ?? 0, ready: true });
+        const value = (await store.get()) ?? 0;
+        if (get().ready) return;
+        set({ value, ready: true });
       },
       // 読み込み前に値を書くと load の結果で上書きされて押下が消えるので無視する
       async increment() {

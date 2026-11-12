@@ -99,3 +99,19 @@ test("set が失敗しても saving は false に戻る", async () => {
   await expect(s.getState().increment()).rejects.toThrow("失敗");
   expect(s.getState().saving).toBe(false);
 });
+
+test("2 回目の load は読み込み後の操作を上書きしない", async () => {
+  const gets: ((value: number) => void)[] = [];
+  const s = createCounterStore({
+    get: () => new Promise<number>((resolve) => gets.push(resolve)),
+    set: async () => {},
+  });
+  const first = s.getState().load();
+  const second = s.getState().load();
+  gets[0]?.(5);
+  await first;
+  await s.getState().reset();
+  gets[1]?.(5);
+  await second;
+  expect(s.getState().value).toBe(0);
+});
