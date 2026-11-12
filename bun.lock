@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "sports-score-system",
+      "name": "nextjs-boilerplate",
       "devDependencies": {
         "@app/ui-components": "workspace:*",
         "@playwright/test": "^1.65.0",
