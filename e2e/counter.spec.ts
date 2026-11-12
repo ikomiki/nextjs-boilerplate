@@ -33,6 +33,7 @@ for (const app of apps) {
       await button(page, "+1").click();
       await expect(display(page)).toHaveAttribute("data-value", "2");
       await page.reload();
+      await expect(button(page, "+1")).toBeEnabled();
       await expect(display(page)).toHaveAttribute(
         "data-value",
         app.persists ? "2" : "0",
@@ -45,6 +46,7 @@ for (const app of apps) {
       await Promise.all(Array.from({ length: 10 }, () => plus.click()));
       await expect(display(page)).toHaveAttribute("data-value", "10");
       await page.reload();
+      await expect(button(page, "+1")).toBeEnabled();
       await expect(display(page)).toHaveAttribute(
         "data-value",
         app.persists ? "10" : "0",
