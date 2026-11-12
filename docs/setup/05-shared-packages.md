@@ -165,7 +165,7 @@ EOF
 (cd packages/datastore-sqlite && bun add kysely && bun add -d @types/bun)
 ```
 
-eslint-plugin-boundaries が `@app/database` の import を解決できるように、`dependencies` に `workspace:*` で載せる。
+実行時に `@app/database` を読めるように、`dependencies` に `workspace:*` で載せる。bun の isolated linker は、宣言したパッケージだけを `node_modules` にリンクする。
 
 工場関数は `createSqliteStore<T>(db: Kysely<Database>, key: string): KeyValueStore<T>`。DB は呼び出し側で `createDatabase` から作って渡す。値は `JSON.stringify` で文字列にして `value` 列に入れ、`get` で `JSON.parse` する。`set` は `onConflict` で同じキーの行を上書きし、行を増やさない。
 

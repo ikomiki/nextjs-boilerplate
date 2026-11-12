@@ -7,7 +7,7 @@
 ```bash
 cat <<'EOF' > package.json
 {
-  "name": "sports-score-system",
+  "name": "nextjs-boilerplate",
   "private": true,
   "packageManager": "bun@1.4.4",
   "workspaces": ["apps/*", "packages/*"]
@@ -121,7 +121,7 @@ EOF
 
 ```bash
 cat <<'EOF' > README.md
-# sports-score-system
+# nextjs-boilerplate
 
 TurboRepo と bun の monorepo に Next.js アプリを載せるボイラープレート。
 

@@ -1,4 +1,4 @@
-# sports-score-system
+# nextjs-boilerplate
 
 TurboRepo と bun の monorepo に Next.js アプリを載せるボイラープレート。
 
