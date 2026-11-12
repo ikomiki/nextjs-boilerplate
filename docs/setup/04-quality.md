@@ -14,7 +14,7 @@ lefthook は 01 の工程で brew から入れてある。
 
 `[install]` の `linker = "isolated"` で、各パッケージの依存をそのパッケージの `node_modules` に置く。ui-components の `styles.css` は DSEG7 のフォントを `../node_modules/dseg` の相対パスで指すので、この配置に頼る。
 
-`bun lint` の組み込み規則で行数を制限する。1 ファイル 300 行、1 関数 100 行で、空行とコメントは数えない。`ignorePatterns` には、取り込んだスキル、作業メモ、設計書のように検査しないファイルを並べる。Storybook のビルド出力 `storybook-static/` は `.gitignore` にあっても `bun lint` が読むので、ここにも並べる。
+`bun lint` の組み込み規則で行数を制限する。1 ファイル 300 行、1 関数 100 行で、空行とコメントは数えない。`ignorePatterns` には、取り込んだスキル、作業メモ、設計書のように検査しないファイルを並べる。Storybook のビルド出力 `storybook-static/` と各アプリの Next.js のビルド出力 `.next/` は `.gitignore` にあっても `bun lint` が読むので、ここにも並べる。
 
 ```bash
 cat <<'EOF' > bunfig.toml
@@ -22,7 +22,13 @@ cat <<'EOF' > bunfig.toml
 linker = "isolated"
 
 [lint]
-ignorePatterns = [".claude/", ".superpowers/", "akapen/", "storybook-static/"]
+ignorePatterns = [
+  ".claude/",
+  ".superpowers/",
+  "akapen/",
+  "storybook-static/",
+  "**/.next/",
+]
 
 [lint.rules]
 "max-lines" = [

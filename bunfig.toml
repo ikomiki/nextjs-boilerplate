@@ -2,7 +2,13 @@
 linker = "isolated"
 
 [lint]
-ignorePatterns = [".claude/", ".superpowers/", "akapen/", "storybook-static/"]
+ignorePatterns = [
+  ".claude/",
+  ".superpowers/",
+  "akapen/",
+  "storybook-static/",
+  "**/.next/",
+]
 
 [lint.rules]
 "max-lines" = [
