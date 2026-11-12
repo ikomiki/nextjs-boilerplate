@@ -4,6 +4,7 @@ bunfig
 bunx
 direnv
 envrc
+indexeddb
 keyval
 kysely
 storybookjs
