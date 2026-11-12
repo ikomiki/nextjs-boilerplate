@@ -164,7 +164,8 @@ cat <<'EOF' > cspell.json
     ".superpowers",
     "akapen",
     "docs/superpowers",
-    "skills-lock.json"
+    "skills-lock.json",
+    "LICENSE"
   ]
 }
 EOF

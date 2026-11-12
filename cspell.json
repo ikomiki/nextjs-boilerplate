@@ -16,6 +16,7 @@
     ".superpowers",
     "akapen",
     "docs/superpowers",
-    "skills-lock.json"
+    "skills-lock.json",
+    "LICENSE"
   ]
 }
