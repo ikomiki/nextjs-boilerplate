@@ -32,6 +32,10 @@ for (const app of apps) {
       await button(page, "+1").click();
       await button(page, "+1").click();
       await expect(display(page)).toHaveAttribute("data-value", "2");
+      await expect(page.getByRole("main")).toHaveAttribute(
+        "aria-busy",
+        "false",
+      );
       await page.reload();
       await expect(button(page, "+1")).toBeEnabled();
       await expect(display(page)).toHaveAttribute(
@@ -45,6 +49,10 @@ for (const app of apps) {
       await expect(plus).toBeEnabled();
       await Promise.all(Array.from({ length: 10 }, () => plus.click()));
       await expect(display(page)).toHaveAttribute("data-value", "10");
+      await expect(page.getByRole("main")).toHaveAttribute(
+        "aria-busy",
+        "false",
+      );
       await page.reload();
       await expect(button(page, "+1")).toBeEnabled();
       await expect(display(page)).toHaveAttribute(
