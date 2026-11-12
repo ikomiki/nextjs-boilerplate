@@ -18,6 +18,8 @@ grep -qx next-env.d.ts .gitignore || echo next-env.d.ts >> .gitignore
 
 ## counter-memory-app
 
+`app/globals.css` は ui-components の `styles.css` を読み、`@source` で `packages/counter/src` を Tailwind の走査対象に足す。ui-components は自分を使う側のパッケージを知らないので、使う側が足す。
+
 ```bash
 mkdir -p apps/counter-memory-app/app
 cat <<'EOF' > apps/counter-memory-app/package.json
@@ -60,6 +62,7 @@ export default { plugins: { "@tailwindcss/postcss": {} } };
 EOF
 cat <<'EOF' > apps/counter-memory-app/app/globals.css
 @import "@app/ui-components/styles.css";
+@source "../../../packages/counter/src";
 EOF
 cat <<'EOF' > apps/counter-memory-app/app/layout.tsx
 import type { ReactNode } from "react";

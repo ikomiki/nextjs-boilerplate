@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @source ".";
-@source "../../counter/src";
 
 @custom-variant dark (&:is(.dark *));
 

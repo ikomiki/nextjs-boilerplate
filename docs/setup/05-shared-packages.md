@@ -171,7 +171,7 @@ eslint-plugin-boundaries が `@app/database` の import を解決できるよう
 
 ## ui-components
 
-shadcn/ui の部品と 7 セグメントの数字表示を置く。Tailwind CSS のテーマもこのパッケージの `styles.css` に持たせ、apps と Storybook はこの CSS だけを読む。
+shadcn/ui の部品と 7 セグメントの数字表示を置く。Tailwind CSS のテーマもこのパッケージの `styles.css` に持たせ、apps と Storybook はこの CSS を読む。
 
 ```bash
 mkdir -p packages/ui-components/src/lib
@@ -238,7 +238,7 @@ EOF
 
 ### styles.css
 
-Tailwind の読み込み、走査するソース、shadcn のテーマ変数、DSEG7 のフォントをまとめる。`@source` は CSS ファイルからの相対パスで、自分の `src` と、この部品を使う `packages/counter/src` を対象にする。まだ無いディレクトリを指しても Tailwind はエラーにしない。
+Tailwind の読み込み、走査するソース、shadcn のテーマ変数、DSEG7 のフォントをまとめる。`@source` は CSS ファイルからの相対パスで、自分の `src` だけを対象にする。この部品を使う側のソースは、読み込む側の CSS が `@source` で足す。
 
 テーマ変数は shadcn の neutral から、Button が使う色と角丸だけを置く。ダークモードは `.dark` クラスを付けたときだけ効くようにし、OS の設定では切り替えない。
 
@@ -249,7 +249,6 @@ cat <<'EOF' > packages/ui-components/src/styles.css
 @import "tailwindcss";
 
 @source ".";
-@source "../../counter/src";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -346,8 +345,12 @@ const config: StorybookConfig = {
 
 export default config;
 EOF
+cat <<'EOF' > .storybook/preview.css
+@import "@app/ui-components/styles.css";
+@source "../packages/counter/src";
+EOF
 cat <<'EOF' > .storybook/preview.ts
-import "@app/ui-components/styles.css";
+import "./preview.css";
 import type { Preview } from "@storybook/react-vite";
 
 const preview: Preview = {};
@@ -360,7 +363,7 @@ jq '.scripts += {
 }' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
-preview が `@app/ui-components/styles.css` を import できるように、ルートの `devDependencies` に `workspace:*` で載せる。ビルド出力の `storybook-static/` は `.gitignore` に入れてある。
+`preview.css` は ui-components のテーマに、counter の Template が使うクラスを足す。`@source` は `.storybook/` からの相対パスで、まだ無いディレクトリを指しても Tailwind はエラーにしない。preview が `@app/ui-components/styles.css` を import できるように、ルートの `devDependencies` に `workspace:*` で載せる。ビルド出力の `storybook-static/` は `.gitignore` に入れてある。
 
 ```bash
 bun run storybook
