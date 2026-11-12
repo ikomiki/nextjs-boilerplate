@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-indexed-db",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;

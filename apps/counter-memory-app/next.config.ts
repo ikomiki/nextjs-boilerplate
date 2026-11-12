@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-memory",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;

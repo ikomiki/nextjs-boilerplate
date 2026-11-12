@@ -8,7 +8,7 @@
 | `counter-memory-app`     | メモリ (再読込で 0 に戻る)         | 3002   |
 | `counter-sqlite-app`     | サーバーの SQLite (Server Actions) | 3003   |
 
-packages は TS のソースをそのまま export しているので、各アプリの `next.config.ts` の `transpilePackages` に、使う `@app/*` を並べる。
+packages は TS のソースをそのまま export しているので、各アプリの `next.config.ts` の `transpilePackages` に、使う `@app/*` を並べる。`next dev` はコーディングエージェントを検出するとアプリ直下に `AGENTS.md` を書き出すので、`agentRules: false` で止める。
 
 `next-env.d.ts` は `next dev` と `next build` が生成し、そのたびに中身を書き換えるので、git では管理しない。
 
@@ -50,6 +50,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-memory",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;
@@ -133,6 +134,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-indexed-db",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;
@@ -187,6 +189,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-sqlite",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;

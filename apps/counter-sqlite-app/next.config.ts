@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     "@app/datastore-sqlite",
     "@app/ui-components",
   ],
+  agentRules: false,
 };
 
 export default nextConfig;
