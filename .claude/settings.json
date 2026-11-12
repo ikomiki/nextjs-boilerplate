@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "storybook@storybook": true,
+    "atlas@ariga": true
+  }
+}
