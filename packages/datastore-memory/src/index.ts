@@ -12,9 +12,10 @@ export type KeyValueStore<T> = {
 export function createMemoryStore<T>(_key: string): KeyValueStore<T> {
   let value: T | undefined;
   return {
-    get: async () => value,
-    set: async (next) => {
+    get: () => Promise.resolve(value),
+    set: (next) => {
       value = next;
+      return Promise.resolve();
     },
   };
 }

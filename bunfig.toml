@@ -2,6 +2,9 @@
 linker = "isolated"
 
 [lint]
+plugins = ["boundaries", "jsdoc"]
+typeAware = true
+maxWarnings = 0
 ignorePatterns = [
   ".claude/",
   ".superpowers/",
@@ -9,6 +12,33 @@ ignorePatterns = [
   "storybook-static/",
   "**/.next/",
 ]
+
+[lint.categories]
+correctness = "error"
+
+[lint.settings."import/resolver".typescript]
+project = "tsconfig.base.json"
+
+[[lint.settings."boundaries/elements"]]
+type = "app"
+pattern = "apps/*"
+
+[[lint.settings."boundaries/elements"]]
+type = "counter"
+pattern = "packages/counter"
+
+[[lint.settings."boundaries/elements"]]
+type = "ui"
+pattern = "packages/ui-components"
+
+[[lint.settings."boundaries/elements"]]
+type = "datastore"
+pattern = "packages/datastore-*"
+capture = ["name"]
+
+[[lint.settings."boundaries/elements"]]
+type = "database"
+pattern = "packages/database"
 
 [lint.rules]
 "max-lines" = [
@@ -19,6 +49,26 @@ ignorePatterns = [
   "error",
   { max = 100, skipBlankLines = true, skipComments = true },
 ]
+"boundaries/dependencies" = [
+  "error",
+  { default = "disallow", policies = [
+    { from = { element = { type = "app" } }, allow = { to = { element = { types = ["counter", "ui", "datastore", "database"] } } } },
+    { from = { element = { type = "counter" } }, allow = { to = { element = { type = "ui" } } } },
+    { from = { element = { type = "datastore", captured = { name = "sqlite" } } }, allow = { to = { element = { type = "database" } } } },
+  ] },
+]
+"jsdoc/require-jsdoc" = [
+  "error",
+  { publicOnly = true, require = { FunctionDeclaration = true, ClassDeclaration = true, ArrowFunctionExpression = true, FunctionExpression = true }, contexts = ["TSTypeAliasDeclaration", "TSInterfaceDeclaration", "TSEnumDeclaration", "VariableDeclarator", "ExportDefaultDeclaration > ObjectExpression"] },
+]
+
+[[lint.overrides]]
+files = [
+  "packages/ui-components/src/components/ui/**",
+  "*.config.{js,mjs,ts}",
+  ".storybook/**",
+]
+rules = { "jsdoc/require-jsdoc" = "off" }
 
 [fmt]
 ignorePatterns = [

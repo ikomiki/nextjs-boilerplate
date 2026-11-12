@@ -12,9 +12,9 @@ export type CounterState = {
   ready: boolean;
   /** increment / reset が始めた保存のうち、終わっていないものがある間は true。 */
   saving: boolean;
-  load(): Promise<void>;
-  increment(): Promise<void>;
-  reset(): Promise<void>;
+  load: () => Promise<void>;
+  increment: () => Promise<void>;
+  reset: () => Promise<void>;
 };
 
 /**

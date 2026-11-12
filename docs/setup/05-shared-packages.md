@@ -411,19 +411,13 @@ export function createCounterStore(store: CounterStore): StoreApi<CounterState>;
 
 ### 依存の向き
 
-`eslint.config.mjs` の `boundaries/dependencies` で、許す import だけを列挙する。それ以外は error になる。
+`bunfig.toml` の `boundaries/dependencies` で、許す import だけを列挙する。それ以外は error になる。
 
-```js
-{
-  from: { element: { type: "counter" } },
-  allow: { to: { element: { type: "ui" } } },
-},
-{
-  from: { element: { type: "datastore", captured: { name: "sqlite" } } },
-  allow: { to: { element: { type: "database" } } },
-},
+```toml
+{ from = { element = { type = "counter" } }, allow = { to = { element = { type = "ui" } } } },
+{ from = { element = { type = "datastore", captured = { name = "sqlite" } } }, allow = { to = { element = { type = "database" } } } },
 ```
 
 counter から datastore-* へ、datastore-* から counter への import は、どちらもこの設定で `bun run lint` が落ちる。
 
-`@app/*` は `tsconfig.base.json` の `paths` で `packages/*/src/index.ts` に解決する。eslint の resolver がこの `paths` を読むので、package.json に宣言していない import も依存の向きの検査に掛かる。
+`@app/*` は `tsconfig.base.json` の `paths` で `packages/*/src/index.ts` に解決する。lint の resolver がこの `paths` を読むので、package.json に宣言していない import も依存の向きの検査に掛かる。

@@ -1,7 +1,6 @@
 {
   "name": "sports-score-system",
   "private": true,
-  "packageManager": "bun@1.4.4",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -34,7 +33,7 @@
     "storybook": "^10.6.7",
     "turbo": "^2.11.11",
     "typedoc": "^0.28.20",
-    "typescript-eslint": "^8.72.2",
     "vite": "^8.3.8"
-  }
+  },
+  "packageManager": "bun@1.4.4"
 }
