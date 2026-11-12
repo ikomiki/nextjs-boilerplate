@@ -1,0 +1,8 @@
+node_modules
+.next
+.turbo
+storybook-static
+docs/api
+playwright-report
+test-results
+apps/counter-sqlite-app/data
