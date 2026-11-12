@@ -109,6 +109,7 @@ apps/counter-sqlite-app/data
 .playwright-cli/
 # スキルの実体は skills-lock.json と 02 の手順から復元する
 .claude/skills/
+.agents/
 EOF
 ```
 
