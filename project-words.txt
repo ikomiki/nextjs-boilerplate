@@ -3,8 +3,10 @@ ariga
 bunfig
 bunx
 direnv
+dseg
 envrc
 indexeddb
 keyval
 kysely
+oklch
 storybookjs
