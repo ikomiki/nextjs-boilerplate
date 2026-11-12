@@ -137,7 +137,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 
 ## 公式スキル
 
-ツール導入の次の工程で、プロジェクトスコープに入れてコミットする (以降の構築でスキルを使うため)。playwright-cli はこの工程で `bunx @playwright/cli` (npm 0.1.24 時点) から使う。
+ツール導入の次の工程で、プロジェクトスコープに入れる (以降の構築でスキルを使うため)。git に入れるのは `skills-lock.json` と `.claude/settings.json` (プラグインと marketplace の宣言) で、`.claude/skills/` の実体はコミットしない。playwright-cli はこの工程で `bunx @playwright/cli` (npm 0.1.24 時点) から使う。
 
 | 技術 | 入れ方 |
 |---|---|

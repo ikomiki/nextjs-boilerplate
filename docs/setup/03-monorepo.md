@@ -107,6 +107,8 @@ test-results
 apps/counter-sqlite-app/data
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+# スキルの実体は skills-lock.json と 02 の手順から復元する
+.claude/skills/
 EOF
 ```
 
