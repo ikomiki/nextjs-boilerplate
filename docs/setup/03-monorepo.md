@@ -62,10 +62,13 @@ EOF
 
 ## turbo.json
 
+各パッケージの tsconfig は `tsconfig.base.json` を継承するが、turbo はパッケージの外のファイルをハッシュに含めない。`globalDependencies` に入れて、変わったときにキャッシュを使わないようにする。
+
 ```bash
 cat <<'EOF' > turbo.json
 {
   "$schema": "https://turborepo.dev/schema.json",
+  "globalDependencies": ["tsconfig.base.json"],
   "tasks": {
     "typecheck": {},
     "test": {},
