@@ -8,3 +8,4 @@ test-results
 apps/counter-sqlite-app/data
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+next-env.d.ts
