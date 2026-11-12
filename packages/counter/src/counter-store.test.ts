@@ -53,3 +53,49 @@ test("ready でない間の increment は何もしない", async () => {
   expect(s.getState().value).toBe(0);
   expect(sets).toEqual([]);
 });
+
+function deferredStore() {
+  const resolvers: (() => void)[] = [];
+  const store: CounterStore = {
+    get: async () => undefined,
+    set: () => new Promise<void>((resolve) => resolvers.push(resolve)),
+  };
+  return { store, resolvers };
+}
+
+test("set が終わるまで saving は true、終われば false", async () => {
+  const { store, resolvers } = deferredStore();
+  const s = createCounterStore(store);
+  await s.getState().load();
+  const done = s.getState().increment();
+  expect(s.getState().saving).toBe(true);
+  resolvers[0]?.();
+  await done;
+  expect(s.getState().saving).toBe(false);
+});
+
+test("重なった 2 つの set が両方終わるまで saving は true", async () => {
+  const { store, resolvers } = deferredStore();
+  const s = createCounterStore(store);
+  await s.getState().load();
+  const first = s.getState().increment();
+  const second = s.getState().increment();
+  resolvers[0]?.();
+  await first;
+  expect(s.getState().saving).toBe(true);
+  resolvers[1]?.();
+  await second;
+  expect(s.getState().saving).toBe(false);
+});
+
+test("set が失敗しても saving は false に戻る", async () => {
+  const s = createCounterStore({
+    get: async () => undefined,
+    set: async () => {
+      throw new Error("失敗");
+    },
+  });
+  await s.getState().load();
+  await expect(s.getState().increment()).rejects.toThrow("失敗");
+  expect(s.getState().saving).toBe(false);
+});

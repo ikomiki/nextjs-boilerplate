@@ -10,6 +10,8 @@ export type CounterStore = {
 export type CounterState = {
   value: number;
   ready: boolean;
+  /** increment / reset が始めた保存のうち、終わっていないものがある間は true。 */
+  saving: boolean;
   load(): Promise<void>;
   increment(): Promise<void>;
   reset(): Promise<void>;
@@ -23,23 +25,37 @@ export type CounterState = {
 export function createCounterStore(
   store: CounterStore,
 ): StoreApi<CounterState> {
-  return createStore<CounterState>((set, get) => ({
-    value: 0,
-    ready: false,
-    async load() {
-      set({ value: (await store.get()) ?? 0, ready: true });
-    },
-    // 読み込み前に値を書くと load の結果で上書きされて押下が消えるので無視する
-    async increment() {
-      if (!get().ready) return;
-      const value = get().value + 1;
-      set({ value });
-      await store.set(value);
-    },
-    async reset() {
-      if (!get().ready) return;
-      set({ value: 0 });
-      await store.set(0);
-    },
-  }));
+  let pending = 0;
+  return createStore<CounterState>((set, get) => {
+    const save = async (value: number) => {
+      pending++;
+      set({ saving: true });
+      try {
+        await store.set(value);
+      } finally {
+        pending--;
+        set({ saving: pending > 0 });
+      }
+    };
+    return {
+      value: 0,
+      ready: false,
+      saving: false,
+      async load() {
+        set({ value: (await store.get()) ?? 0, ready: true });
+      },
+      // 読み込み前に値を書くと load の結果で上書きされて押下が消えるので無視する
+      async increment() {
+        if (!get().ready) return;
+        const value = get().value + 1;
+        set({ value });
+        await save(value);
+      },
+      async reset() {
+        if (!get().ready) return;
+        set({ value: 0 });
+        await save(0);
+      },
+    };
+  });
 }
