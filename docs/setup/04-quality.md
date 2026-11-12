@@ -78,7 +78,7 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{js,jsx,mjs,ts,tsx}"],
     languageOptions: { parser: tseslint.parser },
     plugins: { boundaries },
     settings: {
@@ -127,7 +127,7 @@ export default [
     },
   },
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{js,jsx,mjs,ts,tsx}"],
     ignores: ["packages/ui-components/src/components/ui/**"],
     plugins: { jsdoc },
     rules: {
