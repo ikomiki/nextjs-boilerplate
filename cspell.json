@@ -1,0 +1,21 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "dictionaryDefinitions": [
+    { "name": "project-words", "path": "./project-words.txt", "addWords": true }
+  ],
+  "dictionaries": ["project-words"],
+  "useGitignore": true,
+  "ignorePaths": [
+    "node_modules",
+    ".next",
+    "bun.lock",
+    "docs/api",
+    "*.svg",
+    ".claude",
+    ".superpowers",
+    "akapen",
+    "docs/superpowers",
+    "skills-lock.json"
+  ]
+}

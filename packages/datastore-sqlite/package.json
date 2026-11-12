@@ -1,0 +1,18 @@
+{
+  "name": "@app/datastore-sqlite",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bun check",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@app/database": "workspace:*",
+    "kysely": "^0.29.8"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4"
+  }
+}

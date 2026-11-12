@@ -1,0 +1,14 @@
+{
+  "name": "@app/datastore-memory",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bun check",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4"
+  }
+}

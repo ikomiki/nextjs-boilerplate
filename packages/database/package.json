@@ -1,0 +1,19 @@
+{
+  "name": "@app/database",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bun check",
+    "test": "bun test",
+    "migrate:diff": "atlas migrate diff --env local",
+    "migrate:apply": "mkdir -p ../../apps/counter-sqlite-app/data && atlas migrate apply --env local"
+  },
+  "dependencies": {
+    "kysely": "^0.29.8"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.4"
+  }
+}
