@@ -1,0 +1,13 @@
+pre-commit:
+  parallel: true
+  commands:
+    fmt:
+      run: bun fmt --no-script --staged
+    lint:
+      run: bun lint --no-script --staged
+    spell:
+      run: bunx cspell --no-progress --no-must-find-files {staged_files}
+pre-push:
+  commands:
+    check:
+      run: bun run typecheck && bun run test

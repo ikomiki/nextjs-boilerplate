@@ -10,9 +10,20 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "lint": "bun lint --no-script",
+    "fmt": "bun fmt --no-script",
+    "fmt:check": "bun fmt --no-script --check",
+    "spell": "cspell --no-progress .",
+    "docs:api": "typedoc"
   },
   "devDependencies": {
-    "turbo": "^2.11.11"
+    "cspell": "^10.4.1",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-boundaries": "^7.4.2",
+    "eslint-plugin-jsdoc": "^65.4.5",
+    "turbo": "^2.11.11",
+    "typedoc": "^0.28.20",
+    "typescript-eslint": "^8.72.2"
   }
 }
