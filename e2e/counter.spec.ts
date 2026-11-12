@@ -44,7 +44,7 @@ for (const app of apps) {
       );
     });
 
-    test("素早く 10 回押してすぐ再読込", async ({ page }) => {
+    test("素早く 10 回押し、保存の完了を確かめて再読込", async ({ page }) => {
       const plus = button(page, "+1");
       await expect(plus).toBeEnabled();
       await Promise.all(Array.from({ length: 10 }, () => plus.click()));
