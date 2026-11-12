@@ -368,3 +368,59 @@ preview が `@app/ui-components/styles.css` を import できるように、ル�
 bun run storybook
 bun run storybook:build
 ```
+
+## counter
+
+Template と、アプリ固有のロジックを置く。保存先は自分で型を宣言し、datastore-* は import しない。依存してよいのは ui-components だけにする。
+
+```bash
+mkdir -p packages/counter/src
+cat <<'EOF' > packages/counter/package.json
+{
+  "name": "@app/counter",
+  "private": true,
+  "exports": { ".": "./src/index.ts" },
+  "scripts": { "typecheck": "bun check", "test": "bun test" }
+}
+EOF
+cat <<'EOF' > packages/counter/tsconfig.json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "types": ["bun"] },
+  "include": ["src"]
+}
+EOF
+(cd packages/counter && bun add react react-dom zustand "@app/ui-components@workspace:*" && bun add -d @types/bun @types/react @types/react-dom)
+```
+
+counter が宣言する保存先の型と、ストアの工場関数の形は次のとおり。実装は `packages/counter/src/counter-store.ts` と `CounterTemplate.tsx` にある。
+
+```ts
+export type CounterStore = {
+  get(): Promise<number | undefined>;
+  set(value: number): Promise<void>;
+};
+
+export function createCounterStore(store: CounterStore): StoreApi<CounterState>;
+```
+
+`ready` は `load()` が終わるまで false で、その間の `increment` は何もしない。`CounterTemplate` も `ready` になるまで [+1] と [リセット] を `disabled` にする。保存値が無ければ 0 から始める。
+
+### 依存の向き
+
+`eslint.config.mjs` の `boundaries/dependencies` で、許す import だけを列挙する。それ以外は error になる。
+
+```js
+{
+  from: { element: { type: "counter" } },
+  allow: { to: { element: { type: "ui" } } },
+},
+{
+  from: { element: { type: "datastore", captured: { name: "sqlite" } } },
+  allow: { to: { element: { type: "database" } } },
+},
+```
+
+counter から datastore-* へ、datastore-* から counter への import は、どちらもこの設定で `bun run lint` が落ちる。
+
+boundaries は package.json の `dependencies` に宣言された `@app/*` だけを解決するので、宣言の無い import は lint でも検出されない。
