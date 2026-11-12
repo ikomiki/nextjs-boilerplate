@@ -70,7 +70,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 
 - counter が、自分が必要とする保存先の型 (ポート) を宣言する。形は「非同期の get / set」
   - 例: `type CounterStore = { get(): Promise<number | undefined>; set(value: number): Promise<void> }`
-- datastore-* は counter を知らない。各自がキーを束縛した工場関数を公開し、値はジェネリクス `T` で JSON にして保存する
+- datastore-* は counter を知らない。各自がキーを束縛した工場関数を公開し、値はジェネリクス `T` で受け取る。保存の形は datastore ごとに違い、sqlite は JSON 文字列、indexed-db は構造化複製、memory は受け取った値をそのまま持つ
   - 例: `createMemoryStore<T>(key)` / `createIndexedDbStore<T>(key)` / `createSqliteStore<T>(db, key)` → `{ get(): Promise<T | undefined>; set(value: T): Promise<void> }`
   - 戻り値が `CounterStore` と同じ形になるので、アプリは `createXxxStore<number>("counter")` を渡すだけでよく、型の一致は TypeScript が構造的に検査する
 - counter は `createCounterStore(store)` で Zustand ストアを作る。初回マウントで `get()`、+1 / リセットのたびに `set()`
