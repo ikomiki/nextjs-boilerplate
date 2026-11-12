@@ -2,5 +2,19 @@
   "enabledPlugins": {
     "storybook@storybook": true,
     "atlas@ariga": true
+  },
+  "extraKnownMarketplaces": {
+    "storybook": {
+      "source": {
+        "source": "github",
+        "repo": "storybookjs/mcp"
+      }
+    },
+    "ariga": {
+      "source": {
+        "source": "github",
+        "repo": "ariga/atlas"
+      }
+    }
   }
 }

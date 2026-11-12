@@ -21,16 +21,18 @@ bunx @playwright/cli install --skills
 ## Storybook
 
 ```bash
-claude plugin marketplace add storybookjs/mcp
+claude plugin marketplace add storybookjs/mcp --scope project
 claude plugin install storybook@storybook --scope project
 ```
 
 ## Atlas
 
 ```bash
-claude plugin marketplace add ariga/atlas
+claude plugin marketplace add ariga/atlas --scope project
 claude plugin install atlas@ariga --scope project
 ```
+
+`marketplace add --scope project` は `.claude/settings.json` の `extraKnownMarketplaces` に marketplace を書く。clone した人は、Claude Code がリポジトリを信頼した時点で 2 つの marketplace とプラグインの導入を求められる。
 
 ## clone 後の復元
 
