@@ -186,9 +186,14 @@ ariga
 bunfig
 bunx
 direnv
+dseg
 envrc
+indexeddb
 keyval
 kysely
+oklch
+prebuild
+predev
 storybookjs
 EOF
 ```

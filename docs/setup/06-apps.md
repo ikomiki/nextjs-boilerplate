@@ -13,7 +13,7 @@ packages は TS のソースをそのまま export しているので、各ア�
 `next-env.d.ts` は `next dev` と `next build` が生成し、そのたびに中身を書き換えるので、git では管理しない。
 
 ```bash
-echo next-env.d.ts >> .gitignore
+grep -qx next-env.d.ts .gitignore || echo next-env.d.ts >> .gitignore
 ```
 
 ## counter-memory-app
@@ -141,9 +141,11 @@ export default nextConfig;
 EOF
 ```
 
-`app/counter.tsx` で、メモリ版の工場関数を `createIndexedDbStore` に替える。
+`app/counter.tsx` で、メモリ版の工場関数を `@app/datastore-indexed-db` の `createIndexedDbStore` に替える。
 
 ```tsx
+import { createIndexedDbStore } from "@app/datastore-indexed-db";
+
 const store = createIndexedDbStore<number>("counter");
 ```
 

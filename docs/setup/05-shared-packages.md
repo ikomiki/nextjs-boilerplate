@@ -111,9 +111,7 @@ EOF
 スキーマを変えたら、名前を付けて移行を作り、適用する。`migrations/` にできた SQL と `atlas.sum` はコミットする。
 
 ```bash
-cd packages/database
-bun run migrate:diff init
-bun run migrate:apply
+(cd packages/database && bun run migrate:diff init && bun run migrate:apply)
 ```
 
 ### Kysely と node:sqlite の変換

@@ -90,6 +90,8 @@ bun add -d turbo
 
 ## .gitignore
 
+02 の工程で playwright-cli が足した `.playwright-cli/` の 2 行も含めて書き直す。
+
 ```bash
 cat <<'EOF' > .gitignore
 node_modules
@@ -100,6 +102,8 @@ docs/api
 playwright-report
 test-results
 apps/counter-sqlite-app/data
+# Playwright CLI output (may contain credentials)
+.playwright-cli/
 EOF
 ```
 

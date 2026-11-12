@@ -33,14 +33,14 @@ direnv exec . node -v
 
 ## bun
 
-bun は 1.4.4 を使う。インストールは `brew install bun` で、版を確認する。
+bun は 1.4.4 を使う。`brew install bun` は最新版を入れるので、`bun --version` が `1.4.4` を返すことを確かめる。
 
 ```bash
 bun --version
 bun lint --help
 ```
 
-どちらも通ることを確かめる。`bun lint` と `bun fmt`、`bun check` は 1.4.4 の機能に依存する。
+`bun lint --help` も通ることを確かめる。`bun lint` と `bun fmt`、`bun check` は 1.4.4 の機能に依存する。
 
 ## brew で入れるもの
 
