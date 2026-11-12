@@ -1,6 +1,9 @@
 import { beforeEach, expect, test } from "bun:test";
-import { createDatabase, type Database } from "@app/database";
+
 import { type Kysely, sql } from "kysely";
+
+import { createDatabase, type Database } from "@app/database";
+
 import { createSqliteStore, type KeyValueStore } from "./index";
 
 const schema = await Bun.file(

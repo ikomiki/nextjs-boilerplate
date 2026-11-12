@@ -1,4 +1,5 @@
 import { CounterTemplate } from "@app/counter";
+
 import { getCounter, setCounter } from "./actions";
 
 /**

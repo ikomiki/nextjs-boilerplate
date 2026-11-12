@@ -1,9 +1,11 @@
 "use client";
 
-import { Button, SevenSegmentDisplay } from "@app/ui-components";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
-import { createCounterStore, type CounterStore } from "./counter-store";
+
+import { Button, SevenSegmentDisplay } from "@app/ui-components";
+
+import { type CounterStore, createCounterStore } from "./counter-store";
 
 /**
  * 7 セグメントの数字と [+1] [リセット] を並べたカウンター画面。

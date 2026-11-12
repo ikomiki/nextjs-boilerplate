@@ -1,4 +1,5 @@
 import type { DatabaseSync, SQLInputValue } from "node:sqlite";
+
 import type { SqliteDatabase } from "kysely";
 
 /**

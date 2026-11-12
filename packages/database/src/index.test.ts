@@ -1,5 +1,7 @@
 import { expect, test } from "bun:test";
+
 import { sql } from "kysely";
+
 import { createDatabase } from "./index";
 
 test("node:sqlite 経由で Kysely のクエリが通る", async () => {

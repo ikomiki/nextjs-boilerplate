@@ -1,5 +1,6 @@
-import type { Database } from "@app/database";
 import type { Kysely } from "kysely";
+
+import type { Database } from "@app/database";
 
 /** 非同期の get / set で 1 つの値を保存する保存先。 */
 export type KeyValueStore<T> = {

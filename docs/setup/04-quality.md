@@ -16,6 +16,12 @@ lefthook は 01 の工程で brew から入れてある。
 
 `bun lint` の組み込み規則で行数を制限する。1 ファイル 300 行、1 関数 100 行で、空行とコメントは数えない。`ignorePatterns` には、取り込んだスキル、作業メモ、設計書のように検査しないファイルを並べる。Storybook のビルド出力 `storybook-static/` と各アプリの Next.js のビルド出力 `.next/` は `.gitignore` にあっても `bun lint` が読むので、ここにも並べる。
 
+fmt では次を有効にする。
+
+- `sortImports` で import を並べ替え、標準ライブラリ、外部パッケージ、`@app/*`、相対パスの順にグループを分ける
+- `sortTailwindcss` で `className` と `cn` などに渡した Tailwind のクラスを並べ替える。並び順は `stylesheet` の Tailwind の設定から決まる
+- `sortPackageJson` で package.json のキーを並べ替える
+
 ```bash
 cat <<'EOF' > bunfig.toml
 [install]
@@ -48,6 +54,13 @@ ignorePatterns = [
   "docs/superpowers/",
   "skills-lock.json",
 ]
+sortPackageJson = true
+
+[fmt.sortImports]
+internalPattern = ["@app/"]
+
+[fmt.sortTailwindcss]
+stylesheet = "./packages/ui-components/src/styles.css"
 EOF
 ```
 
@@ -206,6 +219,7 @@ oklch
 prebuild
 predev
 storybookjs
+stylesheet
 EOF
 ```
 

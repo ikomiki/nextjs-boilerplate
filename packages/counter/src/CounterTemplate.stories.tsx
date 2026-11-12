@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CounterTemplate } from "./CounterTemplate";
+
 import type { CounterStore } from "./counter-store";
+import { CounterTemplate } from "./CounterTemplate";
 
 function fakeStore(initial?: number): CounterStore {
   let saved = initial;

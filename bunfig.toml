@@ -28,3 +28,10 @@ ignorePatterns = [
   "docs/superpowers/",
   "skills-lock.json",
 ]
+sortPackageJson = true
+
+[fmt.sortImports]
+internalPattern = ["@app/"]
+
+[fmt.sortTailwindcss]
+stylesheet = "./packages/ui-components/src/styles.css"

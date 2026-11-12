@@ -1,5 +1,7 @@
-import { indexedDB as fakeIndexedDb } from "fake-indexeddb";
 import { afterAll, beforeAll, describe, expect, test } from "bun:test";
+
+import { indexedDB as fakeIndexedDb } from "fake-indexeddb";
+
 import { createIndexedDbStore } from "./index";
 
 test("indexedDB が無い環境でも工場関数の呼び出しでは例外を出さない", () => {

@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
-import { createCounterStore, type CounterStore } from "./counter-store";
+
+import { type CounterStore, createCounterStore } from "./counter-store";
 
 function fakeStore(initial?: number) {
   const sets: number[] = [];

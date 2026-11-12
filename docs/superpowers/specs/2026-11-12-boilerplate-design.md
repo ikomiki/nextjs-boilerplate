@@ -97,7 +97,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 | ランタイム (Next.js 実行) | Node 26 (direnv が `.nvmrc` を読んで切り替え) | `.nvmrc`, `.envrc` |
 | パッケージ管理・test・型チェック | bun (`bun install` / `bun test` / `bun check`) | `bunfig.toml` |
 | lint | `bun lint` (行数制限含む) + eslint (boundaries と jsdoc の 2 プラグインのみ) | `bunfig.toml`, `eslint.config.mjs` |
-| fmt | `bun fmt` | `bunfig.toml` |
+| fmt | `bun fmt` (import、Tailwind のクラス、package.json のキーを並べ替える) | `bunfig.toml` |
 | タスク実行 | TurboRepo | `turbo.json` |
 | スペルチェック | CSpell | `cspell.json`, `project-words.txt` |
 | コンポーネント確認 | Storybook (リポジトリ直下に 1 つ。packages の `*.stories.tsx` を集める) | `.storybook/` |

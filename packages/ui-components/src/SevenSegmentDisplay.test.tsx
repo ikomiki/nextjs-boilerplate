@@ -1,5 +1,7 @@
 import { expect, test } from "bun:test";
+
 import { renderToStaticMarkup } from "react-dom/server";
+
 import { SevenSegmentDisplay } from "./SevenSegmentDisplay";
 
 test("値があれば data-value と数字を出す", () => {
