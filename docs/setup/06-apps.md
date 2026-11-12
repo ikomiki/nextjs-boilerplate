@@ -153,3 +153,90 @@ bun run --filter @app/counter-indexed-db-app dev
 ```
 
 http://localhost:3001 を開く。再読込しても値が残る。
+
+## counter-sqlite-app
+
+値はサーバーの SQLite に置き、ブラウザからは Server Actions で読み書きする。DB ファイルは `apps/counter-sqlite-app/data/counter.db` で、`.gitignore` に入れてある。`predev` と `prebuild` で Atlas の移行を当てるので、DB ファイルが無くても `dev` と `build` はそのまま動く。
+
+```bash
+mkdir -p apps/counter-sqlite-app/app
+cat <<'EOF' > apps/counter-sqlite-app/package.json
+{
+  "name": "@app/counter-sqlite-app",
+  "private": true,
+  "scripts": {
+    "predev": "bun run --filter @app/database migrate:apply",
+    "dev": "next dev --port 3003",
+    "prebuild": "bun run --filter @app/database migrate:apply",
+    "build": "next build",
+    "start": "next start --port 3003",
+    "typecheck": "bun check"
+  }
+}
+EOF
+(cd apps/counter-sqlite-app && bun add next react react-dom server-only "@app/counter@workspace:*" "@app/ui-components@workspace:*" "@app/datastore-sqlite@workspace:*" "@app/database@workspace:*" && bun add -d typescript @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss)
+cp apps/counter-memory-app/tsconfig.json apps/counter-memory-app/postcss.config.mjs apps/counter-sqlite-app/
+cp apps/counter-memory-app/app/globals.css apps/counter-memory-app/app/layout.tsx apps/counter-sqlite-app/app/
+cat <<'EOF' > apps/counter-sqlite-app/next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  transpilePackages: [
+    "@app/counter",
+    "@app/database",
+    "@app/datastore-sqlite",
+    "@app/ui-components",
+  ],
+};
+
+export default nextConfig;
+EOF
+```
+
+`app/actions.ts` に、datastore-sqlite を呼ぶ Server Actions を 2 つ置く。`server-only` はこのファイルだけで import する。DB はモジュールの中で 1 度だけ開く。
+
+```ts
+"use server";
+
+import "server-only";
+import path from "node:path";
+import { createDatabase } from "@app/database";
+import { createSqliteStore } from "@app/datastore-sqlite";
+
+const store = createSqliteStore<number>(
+  createDatabase(path.join(process.cwd(), "data/counter.db")),
+  "counter",
+);
+
+export async function getCounter(): Promise<number | undefined> {
+  return store.get();
+}
+
+export async function setCounter(value: number): Promise<void> {
+  if (!Number.isSafeInteger(value)) {
+    throw new TypeError("value must be an integer");
+  }
+  await store.set(value);
+}
+```
+
+Server Actions は外から任意の値で呼べるので、`setCounter` は受け取った値が整数かを確かめてから保存する。
+
+`app/page.tsx` はサーバーコンポーネントのまま、2 つの Server Actions を `CounterStore` の形にして渡す。Server Actions はクライアントコンポーネントに渡せる。
+
+```tsx
+import { CounterTemplate } from "@app/counter";
+import { getCounter, setCounter } from "./actions";
+
+export default function Page() {
+  return <CounterTemplate store={{ get: getCounter, set: setCounter }} />;
+}
+```
+
+```bash
+rm -rf apps/counter-sqlite-app/data
+bunx turbo run build --filter=@app/counter-sqlite-app --force
+bun run --filter @app/counter-sqlite-app dev
+```
+
+`build` の前に移行が当たり、`data/counter.db` に `kv` テーブルができる。`data/` は turbo の出力に含まれないので、キャッシュが当たると `prebuild` ごと飛ばされて DB ができない。DB を消したあとは `--force` を付けて build する。http://localhost:3003 を開く。再読込しても値が残る。

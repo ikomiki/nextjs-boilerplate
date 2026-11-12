@@ -9,4 +9,6 @@ indexeddb
 keyval
 kysely
 oklch
+prebuild
+predev
 storybookjs
