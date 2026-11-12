@@ -323,7 +323,7 @@ Button が使う `cn` (shadcn の npm パッケージ) と `radix-ui` は、こ�
 実装は `packages/ui-components/src/seven-segment.ts` と `src/SevenSegmentDisplay.tsx` にある。
 
 - `formatSegments(value, minDigits = 4)` は、`minDigits` 桁にゼロ埋めした `text` と、同じ桁数の "8" を並べた `ghost` を返す。桁があふれたら切らずに桁を増やす
-- `SevenSegmentDisplay` は `<output aria-label="カウンター" data-value={value}>` に `text` を DSEG7 で描き、`ghost` を `aria-hidden` で薄く重ねる。DSEG7 の "8" は全セグメントが点いた形なので、消えているセグメントが薄く見える
+- `SevenSegmentDisplay` は `<output aria-label="カウンター" data-value={value}>` に `text` を DSEG7 で描き、`ghost` を `aria-hidden` で薄く重ねる。DSEG7 の "8" は全セグメントが点いた形なので、消えているセグメントが薄く見える。`value` を省くと `data-value` を出さず、数字を `invisible` にして消灯セグメントだけを見せる。数字の幅は残るので、値が入ってもレイアウトは動かない。`CounterTemplate` は保存値の読み込みが終わるまで `value` を渡さない
 
 ## Storybook
 

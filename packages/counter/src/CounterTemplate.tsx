@@ -18,7 +18,7 @@ export function CounterTemplate(props: { store: CounterStore }) {
   }, [load]);
   return (
     <main aria-busy={saving} className="flex flex-col items-center gap-6 p-8">
-      <SevenSegmentDisplay value={value} />
+      <SevenSegmentDisplay value={ready ? value : undefined} />
       <div className="flex gap-4">
         <Button disabled={!ready} onClick={() => void increment()}>
           +1
