@@ -12,12 +12,12 @@ lefthook は 01 の工程で brew から入れてある。
 
 ## bunfig.toml
 
-`bun lint` の組み込み規則で行数を制限する。1 ファイル 300 行、1 関数 100 行で、空行とコメントは数えない。`ignorePatterns` には、取り込んだスキル、作業メモ、設計書のように検査しないファイルを並べる。`.gitignore` にあるファイルは最初から対象外になる。
+`bun lint` の組み込み規則で行数を制限する。1 ファイル 300 行、1 関数 100 行で、空行とコメントは数えない。`ignorePatterns` には、取り込んだスキル、作業メモ、設計書のように検査しないファイルを並べる。Storybook のビルド出力 `storybook-static/` は `.gitignore` にあっても `bun lint` が読むので、ここにも並べる。
 
 ```bash
 cat <<'EOF' > bunfig.toml
 [lint]
-ignorePatterns = [".claude/", ".superpowers/", "akapen/"]
+ignorePatterns = [".claude/", ".superpowers/", "akapen/", "storybook-static/"]
 
 [lint.rules]
 "max-lines" = [

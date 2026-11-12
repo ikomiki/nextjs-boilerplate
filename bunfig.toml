@@ -1,5 +1,5 @@
 [lint]
-ignorePatterns = [".claude/", ".superpowers/", "akapen/"]
+ignorePatterns = [".claude/", ".superpowers/", "akapen/", "storybook-static/"]
 
 [lint.rules]
 "max-lines" = [
