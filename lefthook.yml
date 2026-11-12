@@ -7,7 +7,11 @@ pre-commit:
       run: bun lint --no-script --staged
     spell:
       run: bunx cspell --no-progress --no-must-find-files {staged_files}
+    secrets:
+      run: gitleaks git --pre-commit --staged --redact --no-banner
 pre-push:
   commands:
     check:
       run: bun run typecheck && bun run test
+    secrets:
+      run: bun run secrets
