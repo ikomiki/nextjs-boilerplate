@@ -191,7 +191,16 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 EOF
+cat <<'EOF' > apps/counter-sqlite-app/turbo.json
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": { "build": { "cache": false } }
+}
+EOF
 ```
+
+`data/` は turbo の出力に含めないので、`build` をキャッシュすると、キャッシュが当たったときに `prebuild` ごと飛ばされて DB ができない。このアプリの `turbo.json` で `build` のキャッシュを切る。
 
 `app/actions.ts` に、datastore-sqlite を呼ぶ Server Actions を 2 つ置く。`server-only` はこのファイルだけで import する。DB はモジュールの中で 1 度だけ開く。
 
@@ -235,8 +244,8 @@ export default function Page() {
 
 ```bash
 rm -rf apps/counter-sqlite-app/data
-bunx turbo run build --filter=@app/counter-sqlite-app --force
+bunx turbo run build --filter=@app/counter-sqlite-app
 bun run --filter @app/counter-sqlite-app dev
 ```
 
-`build` の前に移行が当たり、`data/counter.db` に `kv` テーブルができる。`data/` は turbo の出力に含まれないので、キャッシュが当たると `prebuild` ごと飛ばされて DB ができない。DB を消したあとは `--force` を付けて build する。http://localhost:3003 を開く。再読込しても値が残る。
+`build` の前に移行が当たり、`data/counter.db` に `kv` テーブルができる。http://localhost:3003 を開く。再読込しても値が残る。
