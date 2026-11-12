@@ -48,5 +48,5 @@ bun lint --help
 無ければ入れる。
 
 ```bash
-brew install direnv lefthook atlas
+brew install direnv lefthook atlas gitleaks
 ```

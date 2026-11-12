@@ -17,7 +17,8 @@
     "docs:api": "typedoc",
     "storybook": "storybook dev -p 6006",
     "storybook:build": "storybook build",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "secrets": "gitleaks git --redact --no-banner"
   },
   "devDependencies": {
     "@app/ui-components": "workspace:*",

@@ -8,7 +8,7 @@ lint、fmt、スペルチェック、API ドキュメント、git フックを�
 bun add -d eslint-plugin-boundaries eslint-plugin-jsdoc eslint-import-resolver-typescript cspell typedoc
 ```
 
-lefthook は 01 の工程で brew から入れてある。
+lefthook と gitleaks は 01 の工程で brew から入れてある。
 
 ## bunfig.toml
 
@@ -205,9 +205,21 @@ cat <<'EOF' > typedoc.json
 EOF
 ```
 
+## gitleaks
+
+gitleaks で、API キーやトークン、秘密鍵のような機密情報がコミットに入るのを止める。既定のルールをそのまま使い、設定ファイルは置かない。
+
+誤検知は、`gitleaks git` が出す fingerprint (`コミット:ファイル:ルール:行`) を `.gitleaksignore` に書いて外す。`akapen/boilerplate-01.html` の下書き保存用のキー名 `DRAFT_KEY` は、文字列の形から `generic-api-key` と判定されるので外しておく。
+
+```bash
+cat <<'EOF' > .gitleaksignore
+40375eda4c8ca0c3c9fd75caff9ed95fa1977342:akapen/boilerplate-01.html:generic-api-key:279
+EOF
+```
+
 ## lefthook
 
-pre-commit はステージしたファイルだけを fmt、lint、スペルチェックにかける。pre-push は turbo で型チェックと unit test を回す。
+pre-commit はステージしたファイルだけを fmt、lint、スペルチェックにかけ、ステージした差分に機密情報が無いかを gitleaks で調べる。pre-push は turbo で型チェックと unit test を回し、gitleaks で全履歴を調べる。gitleaks の出力では `--redact` で見つけた値を伏せる。
 
 ```bash
 cat <<'EOF' > lefthook.yml
@@ -220,10 +232,14 @@ pre-commit:
       run: bun lint --no-script --staged
     spell:
       run: bunx cspell --no-progress --no-must-find-files {staged_files}
+    secrets:
+      run: gitleaks git --pre-commit --staged --redact --no-banner
 pre-push:
   commands:
     check:
       run: bun run typecheck && bun run test
+    secrets:
+      run: bun run secrets
 EOF
 lefthook install
 ```
@@ -238,7 +254,8 @@ jq '.scripts += {
   "fmt": "bun fmt --no-script",
   "fmt:check": "bun fmt --no-script --check",
   "spell": "cspell --no-progress .",
-  "docs:api": "typedoc"
+  "docs:api": "typedoc",
+  "secrets": "gitleaks git --redact --no-banner"
 }' package.json > package.json.tmp && mv package.json.tmp package.json
 ```
 
@@ -248,6 +265,7 @@ jq '.scripts += {
 bun run lint
 bun run fmt:check
 bun run spell
+bun run secrets
 ```
 
 どれも終了コード 0 で終わる。`bun run docs:api` は packages を作ったあとで使う。

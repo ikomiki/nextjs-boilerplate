@@ -25,7 +25,7 @@ macOS 上で、TurboRepo + bun の monorepo に Next.js アプリを載せるボ
 - macOS。jq / git / nvm / brew は導入済み
 - 確認済みの版: bun 1.4.4 (npm の latest、brew の stable と同じ。手元は 1.4.4-canary)、Node は nvm で v26.13.1 (LTS) を入れる (手元は v24.22.1)
 - bun は `packageManager: "bun@1.4.4"` で固定し、手順書の最初で `bun --version` と `bun lint --help` が通ることを確かめる。lint・fmt・型チェックの工程は bun 1.4.4 の `lint` / `fmt` / `check` に依存する
-- 冗長でない範囲で brew による追加導入を許す (gsed 等)。direnv / lefthook / atlas は導入済み
+- 冗長でない範囲で brew による追加導入を許す (gsed 等)。direnv / lefthook / atlas / gitleaks は導入済み
 
 ## 構成
 
@@ -104,6 +104,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 | E2E | Playwright | `playwright.config.ts` (直下) |
 | API ドキュメント | TypeDoc (packages の公開 API、出力は git 管理外) | `typedoc.json` |
 | git フック | lefthook | `lefthook.yml` |
+| 機密情報の検出 | gitleaks (既定のルール。誤検知は fingerprint で外す) | `.gitleaksignore` |
 
 ### lint の規則
 
@@ -113,8 +114,8 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 
 ### lefthook
 
-- pre-commit (ステージしたファイルのみ): `bun fmt --staged`、`bun lint --staged`、cspell
-- pre-push: turbo で型チェックと unit test
+- pre-commit (ステージしたファイルのみ): `bun fmt --staged`、`bun lint --staged`、cspell、gitleaks
+- pre-push: turbo で型チェックと unit test、gitleaks で全履歴の検査
 
 ## テスト
 
