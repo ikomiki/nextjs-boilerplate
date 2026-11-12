@@ -423,4 +423,4 @@ export function createCounterStore(store: CounterStore): StoreApi<CounterState>;
 
 counter から datastore-* へ、datastore-* から counter への import は、どちらもこの設定で `bun run lint` が落ちる。
 
-boundaries は package.json の `dependencies` に宣言された `@app/*` だけを解決するので、宣言の無い import は lint でも検出されない。
+`@app/*` は `tsconfig.base.json` の `paths` で `packages/*/src/index.ts` に解決する。eslint の resolver がこの `paths` を読むので、package.json に宣言していない import も依存の向きの検査に掛かる。

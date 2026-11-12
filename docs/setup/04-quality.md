@@ -71,7 +71,7 @@ export default [
     languageOptions: { parser: tseslint.parser },
     plugins: { boundaries },
     settings: {
-      "import/resolver": { typescript: true },
+      "import/resolver": { typescript: { project: "tsconfig.base.json" } },
       "boundaries/elements": [
         { type: "app", pattern: "apps/*" },
         { type: "counter", pattern: "packages/counter" },

@@ -53,7 +53,8 @@ cat <<'EOF' > tsconfig.base.json
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "paths": { "@app/*": ["./packages/*/src/index.ts"] }
   }
 }
 EOF
