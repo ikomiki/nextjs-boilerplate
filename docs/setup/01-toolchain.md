@@ -33,14 +33,15 @@ direnv exec . node -v
 
 ## bun
 
-bun は 1.4.4 を使う。`brew install bun` は最新版を入れるので、`bun --version` が `1.4.4` を返すことを確かめる。
+bun は 1.4.4 を使う。oven-sh の tap から版を固定して入れる。
 
 ```bash
+brew install oven-sh/bun/bun@1.4.4
 bun --version
 bun lint --help
 ```
 
-`bun lint --help` も通ることを確かめる。`bun lint` と `bun fmt`、`bun check` は 1.4.4 の機能に依存する。
+`bun --version` が `1.4.4` を出し、`bun lint --help` も通ることを確かめる。`bun lint` と `bun fmt`、`bun check` は 1.4.4 の機能に依存する。
 
 ## brew で入れるもの
 
