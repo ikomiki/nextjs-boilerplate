@@ -36,7 +36,7 @@ touch bunfig.toml
 
 ## tsconfig.base.json
 
-各パッケージが継承する共通設定。
+各パッケージが継承する共通設定。`strict` に加えて、配列や索引アクセスの `undefined`、`override` の付け忘れ、値を返さない分岐、`switch` の fall through を型エラーにする。`verbatimModuleSyntax` で、型だけの import に `import type` を書かせる。
 
 ```bash
 cat <<'EOF' > tsconfig.base.json
@@ -49,6 +49,10 @@ cat <<'EOF' > tsconfig.base.json
     "jsx": "react-jsx",
     "strict": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,

@@ -96,8 +96,8 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 |---|---|---|
 | ランタイム (Next.js 実行) | Node 26 (direnv が `.nvmrc` を読んで切り替え) | `.nvmrc`, `.envrc` |
 | パッケージ管理・test・型チェック | bun (`bun install` / `bun test` / `bun check`) | `bunfig.toml` |
-| lint | `bun lint` (行数制限含む) + eslint (boundaries と jsdoc の 2 プラグインのみ) | `bunfig.toml`, `eslint.config.mjs` |
-| fmt | `bun fmt` | `bunfig.toml` |
+| lint | `bun lint` (組み込みの推奨ルール、型を使うルール、Next.js と jsx-a11y のルール、行数制限) + ESLint の boundaries と jsdoc の 2 プラグイン | `bunfig.toml` |
+| fmt | `bun fmt` (import、Tailwind のクラス、package.json のキーを並べ替える) | `bunfig.toml` |
 | タスク実行 | TurboRepo | `turbo.json` |
 | スペルチェック | CSpell | `cspell.json`, `project-words.txt` |
 | コンポーネント確認 | Storybook (リポジトリ直下に 1 つ。packages の `*.stories.tsx` を集める) | `.storybook/` |
@@ -113,7 +113,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 
 ### lefthook
 
-- pre-commit (ステージしたファイルのみ): `bun fmt --staged`、`bun lint --staged`、eslint、cspell
+- pre-commit (ステージしたファイルのみ): `bun fmt --staged`、`bun lint --staged`、cspell
 - pre-push: turbo で型チェックと unit test
 
 ## テスト
@@ -128,7 +128,7 @@ eslint-plugin-boundaries で次だけを許し、それ以外の import を erro
 - 雛形は手書きを基本にし、生成コマンドは `bunx shadcn add` だけを使う (人の決定)
 - 手順書は最新の手順だけを書き、経緯は書かない
 - 環境構築 (ツール導入・monorepo・品質ツール・Storybook・Playwright・TypeDoc・lefthook・Atlas の設定) はコマンドを省略せずに書く
-- カウンターアプリの部分は要所だけを書く。書くのは、counter が宣言する保存先の型、datastore-* の工場関数の形、アプリでの注入箇所、依存の向きの eslint 設定、Kysely と `node:sqlite` の変換、Atlas の移行手順。画面やストアの実装全文は載せず、リポジトリのファイルを参照させる
+- カウンターアプリの部分は要所だけを書く。書くのは、counter が宣言する保存先の型、datastore-* の工場関数の形、アプリでの注入箇所、依存の向きの lint 設定、Kysely と `node:sqlite` の変換、Atlas の移行手順。画面やストアの実装全文は載せず、リポジトリのファイルを参照させる
 
 ## 文章の規則 (ソースコードのコメントと全ドキュメント)
 
@@ -153,7 +153,6 @@ Bun / CSpell / TypeDoc / lefthook / Zustand / idb-keyval / Kysely / direnv / Tai
 ## 実装者に任せること
 
 - 各ライブラリの版 (手順書を書く時点の最新安定版で固定する)
-- eslint を `bun lint` に読ませるか、eslint CLI を別に回すか (`bun lint --plugin` で 2 プラグインが動くかを最初に試し、動かなければ CLI)
 - DSEG7 のフォントファイルの配信方法 (next/font/local か CSS の `@font-face`)
 - Storybook の framework 選択、Turbo のタスク名と依存関係、各 tsconfig の継承構造
 - 各アプリの dev サーバーのポート

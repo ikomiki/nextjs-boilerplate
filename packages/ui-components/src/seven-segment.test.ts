@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+
 import { formatSegments } from "./seven-segment";
 
 test("4 桁にゼロ埋めし、ghost は同じ桁数の 8", () => {

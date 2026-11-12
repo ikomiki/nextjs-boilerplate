@@ -217,6 +217,7 @@ EOF
 
 import "server-only";
 import path from "node:path";
+
 import { createDatabase } from "@app/database";
 import { createSqliteStore } from "@app/datastore-sqlite";
 
@@ -243,6 +244,7 @@ Server Actions は外から任意の値で呼べるので、`setCounter` は受�
 
 ```tsx
 import { CounterTemplate } from "@app/counter";
+
 import { getCounter, setCounter } from "./actions";
 
 export default function Page() {

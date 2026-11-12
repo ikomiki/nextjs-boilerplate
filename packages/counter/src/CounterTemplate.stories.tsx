@@ -1,13 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { CounterTemplate } from "./CounterTemplate";
+
 import type { CounterStore } from "./counter-store";
+import { CounterTemplate } from "./CounterTemplate";
 
 function fakeStore(initial?: number): CounterStore {
   let saved = initial;
   return {
-    get: async () => saved,
-    set: async (value) => {
+    get: () => Promise.resolve(saved),
+    set: (value) => {
       saved = value;
+      return Promise.resolve();
     },
   };
 }

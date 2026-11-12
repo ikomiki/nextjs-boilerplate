@@ -1,12 +1,14 @@
 import { expect, test } from "bun:test";
-import { createCounterStore, type CounterStore } from "./counter-store";
+
+import { type CounterStore, createCounterStore } from "./counter-store";
 
 function fakeStore(initial?: number) {
   const sets: number[] = [];
   const store: CounterStore = {
-    get: async () => initial,
-    set: async (value) => {
+    get: () => Promise.resolve(initial),
+    set: (value) => {
       sets.push(value);
+      return Promise.resolve();
     },
   };
   return { store, sets };
@@ -57,7 +59,7 @@ test("ready でない間の increment は何もしない", async () => {
 function deferredStore() {
   const resolvers: (() => void)[] = [];
   const store: CounterStore = {
-    get: async () => undefined,
+    get: () => Promise.resolve(undefined),
     set: () => new Promise<void>((resolve) => resolvers.push(resolve)),
   };
   return { store, resolvers };
@@ -90,10 +92,8 @@ test("重なった 2 つの set が両方終わるまで saving は true", async
 
 test("set が失敗しても saving は false に戻る", async () => {
   const s = createCounterStore({
-    get: async () => undefined,
-    set: async () => {
-      throw new Error("失敗");
-    },
+    get: () => Promise.resolve(undefined),
+    set: () => Promise.reject(new Error("失敗")),
   });
   await s.getState().load();
   await expect(s.getState().increment()).rejects.toThrow("失敗");
@@ -104,7 +104,7 @@ test("2 回目の load は読み込み後の操作を上書きしない", async 
   const gets: ((value: number) => void)[] = [];
   const s = createCounterStore({
     get: () => new Promise<number>((resolve) => gets.push(resolve)),
-    set: async () => {},
+    set: () => Promise.resolve(),
   });
   const first = s.getState().load();
   const second = s.getState().load();

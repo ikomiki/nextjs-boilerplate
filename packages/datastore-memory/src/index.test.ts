@@ -1,4 +1,5 @@
 import { expect, test } from "bun:test";
+
 import { createMemoryStore } from "./index";
 
 test("未保存のキーは undefined を返す", async () => {

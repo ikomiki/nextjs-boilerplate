@@ -1,5 +1,7 @@
 import { DatabaseSync } from "node:sqlite";
+
 import { Kysely, SqliteDialect } from "kysely";
+
 import { toKyselySqlite } from "./node-sqlite-adapter";
 
 /** キーと JSON 文字列の値を 1 行ずつ持つ `kv` テーブルの行。 */
