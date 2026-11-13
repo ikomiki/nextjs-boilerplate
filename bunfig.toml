@@ -66,13 +66,13 @@ pattern = "packages/database"
     { from = { element = { type = "datastore", captured = { name = "sqlite" } } }, allow = { to = { element = { type = "database" } } } },
   ] },
 ]
-# 公開 API には JSDoc を必須にする (API ドキュメントを自動生成するため)
+# 公開 API には JSDoc を必須にする (typedoc で API ドキュメントを生成するため)
 "jsdoc/require-jsdoc" = [
   "error",
   { publicOnly = true, require = { FunctionDeclaration = true, ClassDeclaration = true, ArrowFunctionExpression = true, FunctionExpression = true }, contexts = ["TSTypeAliasDeclaration", "TSInterfaceDeclaration", "TSEnumDeclaration", "VariableDeclarator", "ExportDefaultDeclaration > ObjectExpression"] },
 ]
 
-# 自動生成された UI コンポーネント・設定ファイル・Storybook 設定は JSDoc 必須の対象外
+# 生成コード (shadcn/ui)・設定ファイル・Storybook 設定は JSDoc 必須の対象外
 [[lint.overrides]]
 files = [
   "packages/ui-components/src/components/ui/**",
