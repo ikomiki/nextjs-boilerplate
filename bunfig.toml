@@ -1,9 +1,14 @@
+# パッケージのインストール設定
 [install]
+# 各ワークスペースからは自分が宣言した依存しか見えない (ルートの型定義なども自動では共有されない)
 linker = "isolated"
 
+# bun lint (oxlint) の設定
 [lint]
 plugins = ["boundaries", "jsdoc"]
+# 型情報を使うルールを有効にする
 typeAware = true
+# 警告が 1 件でもあれば失敗扱いにする
 maxWarnings = 0
 ignorePatterns = [
   ".claude/",
@@ -16,9 +21,11 @@ ignorePatterns = [
 [lint.categories]
 correctness = "error"
 
+# @app/* などのパスエイリアスを解決するため tsconfig を参照させる
 [lint.settings."import/resolver".typescript]
 project = "tsconfig.base.json"
 
+# パッケージ間の依存方向を検査するための要素定義
 [[lint.settings."boundaries/elements"]]
 type = "app"
 pattern = "apps/*"
@@ -41,6 +48,7 @@ type = "database"
 pattern = "packages/database"
 
 [lint.rules]
+# ファイル・関数の肥大化を防ぐ上限
 "max-lines" = [
   "error",
   { max = 300, skipBlankLines = true, skipComments = true },
@@ -49,6 +57,7 @@ pattern = "packages/database"
   "error",
   { max = 100, skipBlankLines = true, skipComments = true },
 ]
+# 依存してよい方向だけを許可する (app → 各パッケージ、counter → ui、sqlite データストア → database)
 "boundaries/dependencies" = [
   "error",
   { default = "disallow", policies = [
@@ -57,11 +66,13 @@ pattern = "packages/database"
     { from = { element = { type = "datastore", captured = { name = "sqlite" } } }, allow = { to = { element = { type = "database" } } } },
   ] },
 ]
+# 公開 API には JSDoc を必須にする (API ドキュメントを自動生成するため)
 "jsdoc/require-jsdoc" = [
   "error",
   { publicOnly = true, require = { FunctionDeclaration = true, ClassDeclaration = true, ArrowFunctionExpression = true, FunctionExpression = true }, contexts = ["TSTypeAliasDeclaration", "TSInterfaceDeclaration", "TSEnumDeclaration", "VariableDeclarator", "ExportDefaultDeclaration > ObjectExpression"] },
 ]
 
+# 自動生成された UI コンポーネント・設定ファイル・Storybook 設定は JSDoc 必須の対象外
 [[lint.overrides]]
 files = [
   "packages/ui-components/src/components/ui/**",
@@ -70,6 +81,7 @@ files = [
 ]
 rules = { "jsdoc/require-jsdoc" = "off" }
 
+# bun fmt (oxfmt) の設定
 [fmt]
 ignorePatterns = [
   ".claude/",
@@ -80,8 +92,10 @@ ignorePatterns = [
 ]
 sortPackageJson = true
 
+# @app/ で始まる import を内部モジュールとしてグループ分けする
 [fmt.sortImports]
 internalPattern = ["@app/"]
 
+# Tailwind のクラス順をこのスタイルシートの定義に合わせて並べ替える
 [fmt.sortTailwindcss]
 stylesheet = "./packages/ui-components/src/styles.css"
