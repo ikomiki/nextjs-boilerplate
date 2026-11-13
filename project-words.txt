@@ -11,5 +11,7 @@ kysely
 oklch
 prebuild
 predev
+shadcn
 storybookjs
 stylesheet
+typedoc
