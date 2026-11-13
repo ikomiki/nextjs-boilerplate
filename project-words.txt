@@ -4,12 +4,16 @@ bunfig
 bunx
 direnv
 dseg
+ehthumbs
 envrc
+fseventsd
 indexeddb
 keyval
 kysely
 oklch
 prebuild
 predev
+shadcn
 storybookjs
 stylesheet
+typedoc
